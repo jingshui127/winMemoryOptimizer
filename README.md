@@ -6,95 +6,95 @@
 [![](https://img.shields.io/badge/WINDOWS-7%20%E2%80%93%2011-blue)](https://endoflife.date/windows) 
 [![](https://img.shields.io/badge/SERVER-2012%20%E2%80%93%202025-blue)](https://endoflife.date/windows-server) 
 
-winMemoryOptimizer uses native Windows features to clear and optimize memory areas. Sometimes, programs do not release the allocated memory, making the computer slow. That is when you need to optimize the memory so you can keep working without wasting time restarting your system. 
+winMemoryOptimizer 使用Windows原生功能来清理和优化内存区域。有时，程序不会释放分配的内存，导致计算机变慢。这时你需要优化内存，这样你就可以继续工作而不必浪费时间重启系统。
 
-This tool is inspired by the [Igor Mundstein's WinMemoryCleaner project](https://github.com/IgorMundstein/WinMemoryCleaner).
-The main idea was to create super-minimalistic and portable application with all functionality.
+这个工具的灵感来自 [Igor Mundstein 的 WinMemoryCleaner 项目](https://github.com/IgorMundstein/WinMemoryCleaner)。
+主要想法是创建一个超级简约、便携且功能齐全的应用程序。
 
-The app has no UI, just notification icon. 
-It's portable, and you do not need to install it, but it requires administrator privileges to run. Click on the download button below and run the executable to get started.
+该应用没有UI，只有通知图标。
+它是便携式的，不需要安装，但需要管理员权限才能运行。点击下面的下载按钮并运行可执行文件即可开始使用。
 
 
-## What does it look like?
+## 它看起来是什么样的？
 
-Here is an example of the application running on Windows 10 (light/dark theme):
+以下是应用程序在Windows 10（浅色/深色主题）上运行的示例：
 
 [<img src="https://github.com/sergiye/winMemoryOptimizer/raw/master/preview.png" alt="preview"/>](https://github.com/sergiye/winMemoryOptimizer/raw/master/preview.png)
 
-and a preview of the app notification after optimization completed:
+以及优化完成后应用通知的预览：
 
 [<img src="https://github.com/sergiye/winMemoryOptimizer/raw/master/preview_notification.png" alt="preview_notification"/>](https://github.com/sergiye/winMemoryOptimizer/raw/master/preview_notification.png)
 
-## Download Latest Version
+## 下载最新版本
 
-The published version can be obtained from [releases](https://github.com/sergiye/winMemoryOptimizer/releases) page, or get the newer one directly from:
-[Latest Version](https://github.com/sergiye/winMemoryOptimizer/releases/latest)
+已发布的版本可以从 [releases](https://github.com/sergiye/winMemoryOptimizer/releases) 页面获取，或直接从以下链接获取更新版本：
+[最新版本](https://github.com/sergiye/winMemoryOptimizer/releases/latest)
 
-## Features
+## 功能特性
 
-### Auto optimization
+### 自动优化
 
-- `Every X hours` The optimization will run by period
-- `When free memory is below X percent` The optimization will run if free memory is below the specified percentage
+- `每 X 小时` 按周期运行优化
+- `当可用内存低于 X% 时` 当可用内存低于指定百分比时运行优化
 
-### Settings
+### 设置选项
 
-- `Run on startup` Runs the app after the system boots up. It creates an entry on Windows **Task Scheduler**
-- `Show optimization notifications` Sends a message to the notification area after optimization. It includes the approximate memory released
-- `Show virtual memory` It also monitors the virtual memory usage
-- `Run on low priority` It limits the app resource usage by reducing the process priority and ensuring it runs efficiently. It might increase the optimization time, but it helps if your Windows freezes during it
-- `Auto update app` Keeps the app up to date. 
+- `开机自启动` 系统启动后运行应用。它会在Windows **任务计划程序**中创建一个条目
+- `显示优化通知` 优化后向通知区域发送消息，包括释放的大约内存量
+- `显示虚拟内存` 同时监控虚拟内存使用情况
+- `以低优先级运行` 通过降低进程优先级来限制应用资源使用，确保高效运行。这可能会增加优化时间，但如果Windows在优化过程中冻结，这会有所帮助
+- `自动更新应用` 保持应用程序更新到最新版本
 
-### Memory Areas
+### 内存区域
 
-- `Combined Page List` Flushes the blocks from the combined page list effectively only when page combining is enabled
-- `Modified Page List` Flushes memory from the modified page list, writing unsaved data to disk and moving the pages to the standby list
-- `Processes Working Set` Removes memory from all user-mode and system working sets and moves it to the standby or modified page lists
-- `Standby List` Flushes pages from all standby lists to the free list
-- `Standby List (Low Priority)` Flushes pages from the lowest-priority standby list to the free list
-- `System Working Set` Removes memory from the system cache working set
-- `Modified File Cache` Flushes the volume file cache to disk for all fixed drives, ensuring all pending writes are committed
-- `System File Cache` Flushes the cache Windows uses for its system files, trimming it to release memory. Useful for refreshing the system’s state before launching a memory-intensive application
-- `Registry Cache` Flushes registry hives from memory. Hives are logical groups of keys and values that are loaded into memory when the OS starts or a user logs in
+- `合并页列表` 仅在启用页面合并时有效刷新合并页列表中的块
+- `修改页列表` 从修改页列表中刷新内存，将未保存的数据写入磁盘并将页面移至备用列表
+- `进程工作集` 从所有用户模式和系统工作集中移除内存，并将其移至备用或修改页列表
+- `备用列表` 将所有备用列表中的页面刷新到可用列表
+- `备用列表（低优先级）` 将最低优先级备用列表中的页面刷新到可用列表
+- `系统工作集` 从系统缓存工作集中移除内存
+- `修改的文件缓存` 为所有固定驱动器将卷文件缓存刷新到磁盘，确保所有挂起的写入都已提交
+- `系统文件缓存` 刷新Windows用于系统文件的缓存，对其进行剪裁以释放内存。在启动内存密集型应用程序之前刷新系统状态很有用
+- `注册表缓存` 从内存中刷新注册表配置单元。配置单元是在OS启动或用户登录时加载到内存中的键和值的逻辑组
 
-<!-- ### Processes excluded from optimization
-- You can build a list of processes to ignore when memory is optimized -->
+<!-- ### 排除优化的进程
+- 您可以构建一个在优化内存时忽略的进程列表 -->
 
-### Tray icon type
+### 托盘图标类型
 
-- `Image` Show app icon
-- `Memory usage` Show physical memory usage (in %)
-- `Memory available` Show physical memory available (in Gb)
-- `Memory used` Show physical memory used (in Gb)
+- `图像` 显示应用图标
+- `内存使用率` 显示物理内存使用率（百分比）
+- `可用内存` 显示可用物理内存（GB）
+- `已用内存` 显示已用物理内存（GB）
 
-The tray icon tooltip also depends on the selected `Icon type`, but can contain virtual memory value if `Show virtual memory` option checked.
+托盘图标提示也取决于所选的`图标类型`，但如果勾选了`显示虚拟内存`选项，则可以包含虚拟内存值。
 
-## Logs
+## 日志
 
-The app generates logs in the Windows event
+应用程序在Windows事件中生成日志
 
-1. Press **Win + R** to open the Run command dialog box
-2. Type **eventvwr** and press **Enter** to open the Event Viewer
-3. Open `Windows Logs` -> `Applications`
+1. 按 **Win + R** 打开运行命令对话框
+2. 输入 **eventvwr** 并按 **Enter** 打开事件查看器
+3. 打开 `Windows 日志` -> `应用程序`
 
 
-## Frequently Asked Questions (FAQ)
+## 常见问题 (FAQ)
 
-### Why has the app been flagged as Malware/Virus and blocked by Windows Defender, SmartScreen, or Antivirus?
+### 为什么应用程序被标记为恶意软件/病毒并被Windows Defender、SmartScreen或防病毒软件阻止？
 
-One of the reasons for this **false alarm** is that the application adds entries to the registry and task scheduler to run the application at startup. Windows doesn't “like” applications with administrator privileges running at startup. Sorry, but the application cannot deep clean memory without administrator privileges.
+这种**误报**的原因之一是应用程序向注册表和任务计划程序添加条目，以便在启动时运行应用程序。Windows不"喜欢"具有管理员权限的应用程序在启动时运行。抱歉，但应用程序无法在没有管理员权限的情况下深度清理内存。
 
-That's a common issue that persists every time a new app version is released. 
-Everyone can submit the executable to Microsoft, usually, it takes up to 72 hours for Microsoft to remove the detection.
-It helps if more users [submit the app for malware analysis](https://www.microsoft.com/en-us/wdsi/filesubmission)
+这是一个常见问题，每次发布新版本时都会出现。
+每个人都可以将可执行文件提交给Microsoft，通常Microsoft需要最多72小时来移除检测。
+如果更多用户 [提交应用程序进行恶意软件分析](https://www.microsoft.com/zh-cn/wdsi/filesubmission)，会有所帮助
 
-Meanwhile, as a workaround, you can [add an exclusion to Windows Security](https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26)
+同时，您可以 [向Windows安全中心添加排除项](https://support.microsoft.com/zh-cn/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26) 作为解决方法
 
-## How can I help improve it?
-The winMemoryOptimizer team welcomes feedback and contributions!<br/>
-You can check if it works properly on your PC. If you notice any inaccuracies, please send us a pull request. If you have any suggestions or improvements, don't hesitate to create an issue.
+## 我如何帮助改进它？
+winMemoryOptimizer团队欢迎反馈和贡献！<br/>
+您可以检查它在您的PC上是否正常工作。如果您发现任何不准确之处，请发送拉取请求。如果您有任何建议或改进，请随时创建问题。
 
-Also, don't forget to ★ star ★ the repository to help other people find it.
+另外，不要忘记 ★ star ★ 该存储库，以帮助其他人找到它。
 
 <!-- [![Star History Chart](https://api.star-history.com/svg?repos=sergiye/winMemoryOptimizer&type=Date)](https://star-history.com/#sergiye/winMemoryOptimizer&Date) -->
 
@@ -104,10 +104,10 @@ Also, don't forget to ★ star ★ the repository to help other people find it.
 
 <!-- [![Forkers](https://reporoster.com/forks/sergiye/winMemoryOptimizer)](https://github.com/sergiye/winMemoryOptimizer/network/members) -->
 
-## Donate!
-Every [cup of coffee](https://patreon.com/SergiyE) you donate will help this app become better and let me know that this project is in demand.
+## 捐赠！
+您捐赠的每一杯 [咖啡](https://patreon.com/SergiyE) 都将帮助这个应用变得更好，并让我知道这个项目有需求。
 
-## License
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+## 许可证
+本程序是自由软件：您可以根据自由软件基金会发布的GNU通用公共许可证第3版或（根据您的选择）任何更高版本的条款重新分发和/或修改它。
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+本程序的分发是希望它能有用，但不提供任何保证；甚至没有适销性或特定用途适用性的暗示保证。有关更多详细信息，请参阅GNU通用公共许可证。

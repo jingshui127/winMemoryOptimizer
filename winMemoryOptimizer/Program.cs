@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using sergiye.Common;
 
@@ -23,7 +23,7 @@ namespace winMemoryOptimizer {
       }
 
       if (WinApiHelper.CheckRunningInstances(true, false)) {
-        MessageBox.Show($"{Updater.ApplicationName} is already running.", Updater.ApplicationName,
+        MessageBox.Show($"{Updater.ApplicationName} 已在运行中。", Updater.ApplicationName,
           MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         return;
       }

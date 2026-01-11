@@ -1,4 +1,4 @@
-﻿using sergiye.Common;
+using sergiye.Common;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -13,14 +13,14 @@ namespace winMemoryOptimizer {
   
   internal class ComputerService {
 
-    public static bool HasCombinedPageList => OperatingSystemHelper.IsWindows8OrGreater;
-    public static bool HasModifiedPageList => OperatingSystemHelper.IsWindowsVistaOrGreater;
-    public static bool HasProcessesWorkingSet => OperatingSystemHelper.IsWindowsXpOrGreater;
-    public static bool HasStandbyList => OperatingSystemHelper.IsWindowsVistaOrGreater;
-    public static bool HasSystemWorkingSet => OperatingSystemHelper.IsWindowsXpOrGreater;
-    public static bool HasModifiedFileCache => OperatingSystemHelper.IsWindowsXpOrGreater;
-    public static bool HasSystemFileCache => OperatingSystemHelper.IsWindowsXpOrGreater;
-    public static bool HasRegistryCache => OperatingSystemHelper.IsWindows81OrGreater;
+    public static bool HasCombinedPageList => OperatingSystemHelper.IsWindows8OrGreater; // 是否支持合并页列表优化
+    public static bool HasModifiedPageList => OperatingSystemHelper.IsWindowsVistaOrGreater; // 是否支持修改页列表优化
+    public static bool HasProcessesWorkingSet => OperatingSystemHelper.IsWindowsXpOrGreater; // 是否支持进程工作集优化
+    public static bool HasStandbyList => OperatingSystemHelper.IsWindowsVistaOrGreater; // 是否支持备用列表优化
+    public static bool HasSystemWorkingSet => OperatingSystemHelper.IsWindowsXpOrGreater; // 是否支持系统工作集优化
+    public static bool HasModifiedFileCache => OperatingSystemHelper.IsWindowsXpOrGreater; // 是否支持修改的文件缓存优化
+    public static bool HasSystemFileCache => OperatingSystemHelper.IsWindowsXpOrGreater; // 是否支持系统文件缓存优化
+    public static bool HasRegistryCache => OperatingSystemHelper.IsWindows81OrGreater; // 是否支持注册表缓存优化
 
     private WindowsStructs.MemoryStatusEx memoryStatusEx;
 
@@ -87,7 +87,7 @@ namespace winMemoryOptimizer {
         try {
           if (OnOptimizeProgressUpdate != null) {
             value++;
-            OnOptimizeProgressUpdate(value, "Processes Working Set");
+            OnOptimizeProgressUpdate(value, "进程工作集");
           }
 
           stopwatch.Restart();
@@ -109,7 +109,7 @@ namespace winMemoryOptimizer {
         try {
           if (OnOptimizeProgressUpdate != null) {
             value++;
-            OnOptimizeProgressUpdate(value, "System Working Set");
+            OnOptimizeProgressUpdate(value, "系统工作集");
           }
 
           stopwatch.Restart();
@@ -130,7 +130,7 @@ namespace winMemoryOptimizer {
         try {
           if (OnOptimizeProgressUpdate != null) {
             value++;
-            OnOptimizeProgressUpdate(value, "Modified Page List");
+            OnOptimizeProgressUpdate(value, "修改页列表");
           }
 
           stopwatch.Restart();
@@ -153,7 +153,7 @@ namespace winMemoryOptimizer {
         try {
           if (OnOptimizeProgressUpdate != null) {
             value++;
-            OnOptimizeProgressUpdate(value, lowPriority ? "Standby List (Low Priority)" : "Standby List");
+            OnOptimizeProgressUpdate(value, lowPriority ? "备用列表（低优先级）" : "备用列表");
           }
 
           stopwatch.Restart();
@@ -176,7 +176,7 @@ namespace winMemoryOptimizer {
         try {
           if (OnOptimizeProgressUpdate != null) {
             value++;
-            OnOptimizeProgressUpdate(value, "Combined Page List");
+            OnOptimizeProgressUpdate(value, "合并页列表");
           }
 
           stopwatch.Restart();
@@ -197,7 +197,7 @@ namespace winMemoryOptimizer {
         try {
           if (OnOptimizeProgressUpdate != null) {
             value++;
-            OnOptimizeProgressUpdate(value, "Modified File Cache");
+            OnOptimizeProgressUpdate(value, "修改的文件缓存");
           }
          
           stopwatch.Restart();
@@ -218,7 +218,7 @@ namespace winMemoryOptimizer {
         try {
           if (OnOptimizeProgressUpdate != null) {
             value++;
-            OnOptimizeProgressUpdate(value, "System File Cache");
+            OnOptimizeProgressUpdate(value, "系统文件缓存");
           }
 
           stopwatch.Restart();
@@ -239,7 +239,7 @@ namespace winMemoryOptimizer {
         try {
           if (OnOptimizeProgressUpdate != null) {
             value++;
-            OnOptimizeProgressUpdate(value, "Registry Cache");
+            OnOptimizeProgressUpdate(value, "注册表缓存");
           }
 
           stopwatch.Restart();
@@ -281,9 +281,9 @@ namespace winMemoryOptimizer {
       }
       finally {
         if (OnOptimizeProgressUpdate != null) {
-          value++;
-          OnOptimizeProgressUpdate(value, "Optimized");
-        }
+            value++;
+            OnOptimizeProgressUpdate(value, "已优化");
+          }
       }
     }
 

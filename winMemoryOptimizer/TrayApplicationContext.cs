@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -13,8 +13,8 @@ namespace winMemoryOptimizer {
   internal class TrayApplicationContext : ApplicationContext {
 
     private readonly IContainer components = new Container();
-    private const int AutoOptimizationMemoryUsageInterval = 5; // Minute
-    private const int AutoUpdateCheckInterval = 24; // Hours
+    private const int AutoOptimizationMemoryUsageInterval = 5; // 分钟
+    private const int AutoUpdateCheckInterval = 24; // 小时
 
     private readonly Icon imageIcon;
     private readonly NotifyIconAdv notifyIcon;
@@ -129,11 +129,11 @@ namespace winMemoryOptimizer {
     private string GetTrayIconText() {
       return Settings.TrayIconMode switch {
         Enums.TrayIconMode.MemoryAvailable => !Settings.ShowVirtualMemory
-                    ? $"Memory available:\nPhysical: {computer.Memory.Physical.Free}"
-                    : $"Memory available:\nPhysical: {computer.Memory.Physical.Free}\nVirtual: {computer.Memory.Virtual.Free}",
+                    ? $"可用内存:\n物理内存: {computer.Memory.Physical.Free}"
+                    : $"可用内存:\n物理内存: {computer.Memory.Physical.Free}\n虚拟内存: {computer.Memory.Virtual.Free}",
         _ => !Settings.ShowVirtualMemory
-                    ? $"Memory used:\nPhysical: {computer.Memory.Physical.Used}"
-                    : $"Memory used:\nPhysical: {computer.Memory.Physical.Used}\nVirtual: {computer.Memory.Virtual.Used}",
+                    ? $"已用内存:\n物理内存: {computer.Memory.Physical.Used}"
+                    : $"已用内存:\n物理内存: {computer.Memory.Physical.Used}\n虚拟内存: {computer.Memory.Virtual.Used}",
       };
     }
 
@@ -421,10 +421,10 @@ namespace winMemoryOptimizer {
           var virtualReleased = (computer.Memory.Virtual.Free.Bytes > tempVirtualAvailable
             ? computer.Memory.Virtual.Free.Bytes - tempVirtualAvailable
             : tempVirtualAvailable - computer.Memory.Virtual.Free.Bytes).ToMemoryUnit();
-          var message = $"Reason: {reason}\nPhysical: {physicalReleased.Key:0.#} {physicalReleased.Value}";
+          var message = $"原因: {reason}\n物理内存: {physicalReleased.Key:0.#} {physicalReleased.Value}";
           if (Settings.ShowVirtualMemory)
-            message += $"\nVirtual: {virtualReleased.Key:0.#} {virtualReleased.Value}";
-          notifyIcon.ShowBalloonTip(5000, "Memory optimized", message, ToolTipIcon.Info);
+            message += $"\n虚拟内存: {virtualReleased.Key:0.#} {virtualReleased.Value}";
+          notifyIcon.ShowBalloonTip(5000, "内存已优化", message, ToolTipIcon.Info);
         }
       }
       catch (Exception ex) {
@@ -446,46 +446,46 @@ namespace winMemoryOptimizer {
     private void AddMenuItems() {
 
       var menuImage = imageIcon.ToBitmap();
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Optimize now", menuImage, MenuItemOptimizeClick));
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("立即优化", menuImage, MenuItemOptimizeClick));
       notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
       statusInfoMenuLabel = new ToolStripLabel() { TextAlign = ContentAlignment.MiddleLeft };
-      statusMenuLabel = new ToolStripMenuItem("Status") { DropDownItems = { statusInfoMenuLabel } };
+      statusMenuLabel = new ToolStripMenuItem("状态") { DropDownItems = { statusInfoMenuLabel } };
 
       //auto-start
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Auto-start application", null, (sender, _) => {
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("自动启动应用", null, (sender, _) => {
         startupManager.Startup = !startupManager.Startup;
         ((ToolStripMenuItem) sender).Checked = startupManager.Startup;
       }) {
         Checked = startupManager.Startup,
       });
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Auto-update application", null, (_, _) => {
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("自动更新应用", null, (_, _) => {
         Settings.AutoUpdateApp = !Settings.AutoUpdateApp;
       }) {
         Checked = Settings.AutoUpdateApp,
         CheckOnClick = true,
       });
       //auto-optimize
-      autoOptimizationIntervalMenu = new ToolStripMenuItem("Optimize every") {
+      autoOptimizationIntervalMenu = new ToolStripMenuItem("每隔多久优化") {
         DropDownItems = {
-          new ToolStripMenuItem("Never", null, (_, _) => { SetOptimizationIntervalType(0); }){Tag = 0},
-          new ToolStripMenuItem("1 hour", null, (_, _) => { SetOptimizationIntervalType(1); }){Tag = 1},
-          new ToolStripMenuItem("2 hours", null, (_, _) => { SetOptimizationIntervalType(2); }){Tag = 2},
-          new ToolStripMenuItem("3 hours", null, (_, _) => { SetOptimizationIntervalType(3); }){Tag = 3},
-          new ToolStripMenuItem("4 hours", null, (_, _) => { SetOptimizationIntervalType(4); }){Tag = 4},
-          new ToolStripMenuItem("5 hours", null, (_, _) => { SetOptimizationIntervalType(5); }){Tag = 5},
-          new ToolStripMenuItem("6 hours", null, (_, _) => { SetOptimizationIntervalType(6); }){Tag = 6},
-          new ToolStripMenuItem("9 hours", null, (_, _) => { SetOptimizationIntervalType(9); }){Tag = 9},
-          new ToolStripMenuItem("12 hours", null, (_, _) => { SetOptimizationIntervalType(12); }){Tag = 12},
-          new ToolStripMenuItem("24 hours", null, (_, _) => { SetOptimizationIntervalType(24); }){Tag = 24},
+          new ToolStripMenuItem("从不", null, (_, _) => { SetOptimizationIntervalType(0); }){Tag = 0},
+          new ToolStripMenuItem("1小时", null, (_, _) => { SetOptimizationIntervalType(1); }){Tag = 1},
+          new ToolStripMenuItem("2小时", null, (_, _) => { SetOptimizationIntervalType(2); }){Tag = 2},
+          new ToolStripMenuItem("3小时", null, (_, _) => { SetOptimizationIntervalType(3); }){Tag = 3},
+          new ToolStripMenuItem("4小时", null, (_, _) => { SetOptimizationIntervalType(4); }){Tag = 4},
+          new ToolStripMenuItem("5小时", null, (_, _) => { SetOptimizationIntervalType(5); }){Tag = 5},
+          new ToolStripMenuItem("6小时", null, (_, _) => { SetOptimizationIntervalType(6); }){Tag = 6},
+          new ToolStripMenuItem("9小时", null, (_, _) => { SetOptimizationIntervalType(9); }){Tag = 9},
+          new ToolStripMenuItem("12小时", null, (_, _) => { SetOptimizationIntervalType(12); }){Tag = 12},
+          new ToolStripMenuItem("24小时", null, (_, _) => { SetOptimizationIntervalType(24); }){Tag = 24},
         }
       };
       autoOptimizationIntervalMenu.DropDown.Closing += OnContextMenuStripClosing;
       SetOptimizationIntervalType(Settings.AutoOptimizationInterval);
 
-      autoOptimizeUsageMenu = new ToolStripMenuItem("Optimize if free below") {
+      autoOptimizeUsageMenu = new ToolStripMenuItem("当可用内存低于时优化") {
         DropDownItems = {
-          new ToolStripMenuItem("Never", null, (_, _) => { SetOptimizationUsage(0); }),
+          new ToolStripMenuItem("从不", null, (_, _) => { SetOptimizationUsage(0); }),
         }
       };
       for (var i = 10; i < 100; i+=10) {
@@ -496,37 +496,37 @@ namespace winMemoryOptimizer {
       SetOptimizationUsage(Settings.AutoOptimizationMemoryUsage);
 
       #region Optimization types
-      optimizationTypesMenu = new ToolStripMenuItem("Optimization types");
+      optimizationTypesMenu = new ToolStripMenuItem("优化类型");
       if (ComputerService.HasProcessesWorkingSet) 
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("Processes working set", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("进程工作集", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.ProcessesWorkingSet);
         }) { Tag = Enums.MemoryAreas.ProcessesWorkingSet });
       if (ComputerService.HasSystemWorkingSet)
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("System working set", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("系统工作集", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.SystemWorkingSet);
         }) { Tag = Enums.MemoryAreas.SystemWorkingSet });
       if (ComputerService.HasCombinedPageList)
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("Combined page list", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("合并页列表", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.CombinedPageList);
         }) { Tag = Enums.MemoryAreas.CombinedPageList });
       if (ComputerService.HasModifiedPageList) 
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("Modified page list", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("修改页列表", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.ModifiedPageList);
         }) { Tag = Enums.MemoryAreas.ModifiedPageList });
       if (ComputerService.HasStandbyList) {
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("Standby list", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("备用列表", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.StandbyList);
         }) { Tag = Enums.MemoryAreas.StandbyList });
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("Standby list (low priority)", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("备用列表（低优先级）", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.StandbyListLowPriority);
         }) { Tag = Enums.MemoryAreas.StandbyListLowPriority });
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("Modified File Cache", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("修改的文件缓存", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.ModifiedFileCache);
         }) { Tag = Enums.MemoryAreas.ModifiedFileCache });
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("System File Cache", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("系统文件缓存", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.SystemFileCache);
         }) { Tag = Enums.MemoryAreas.SystemFileCache });
-        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("Registry Cache", null, (_, _) => {
+        optimizationTypesMenu.DropDownItems.Add(new ToolStripMenuItem("注册表缓存", null, (_, _) => {
           ToggleMemoryArea(Enums.MemoryAreas.RegistryCache);
         }) { Tag = Enums.MemoryAreas.RegistryCache });
       }
@@ -535,19 +535,19 @@ namespace winMemoryOptimizer {
       #endregion
 
       //settings
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Show optimization notifications", null, (_, _) => {
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("显示优化通知", null, (_, _) => {
         Settings.ShowOptimizationNotifications = !Settings.ShowOptimizationNotifications;
       }) {
         Checked = Settings.ShowOptimizationNotifications,
         CheckOnClick = true,
       });
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Show virtual memory", null, (_, _) => {
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("显示虚拟内存", null, (_, _) => {
         Settings.ShowVirtualMemory = !Settings.ShowVirtualMemory;
       }) {
         Checked = Settings.ShowVirtualMemory,
         CheckOnClick = true,
       });
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Run on low priority", null, (_, _) => {
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("以低优先级运行", null, (_, _) => {
         Settings.RunOnPriority = Settings.RunOnPriority == Enums.Priority.Low ? Enums.Priority.Normal : Enums.Priority.Low;
         SetPriority();
       }) {
@@ -555,46 +555,46 @@ namespace winMemoryOptimizer {
         CheckOnClick = true,
       });
 
-      updateIntervalMenu = new ToolStripMenuItem("Update interval") {
+      updateIntervalMenu = new ToolStripMenuItem("更新间隔") {
         DropDownItems = {
-          new ToolStripMenuItem("1 sec", null, (_, _) => { SetUpdateInterval(1); }){Tag = 1},
-          new ToolStripMenuItem("2 sec", null, (_, _) => { SetUpdateInterval(2); }){Tag = 2},
-          new ToolStripMenuItem("3 sec", null, (_, _) => { SetUpdateInterval(3); }){Tag = 3},
-          new ToolStripMenuItem("5 sec", null, (_, _) => { SetUpdateInterval(5); }){Tag = 5},
-          new ToolStripMenuItem("10 sec", null, (_, _) => { SetUpdateInterval(10); }){Tag = 10},
-          new ToolStripMenuItem("30 sec", null, (_, _) => { SetUpdateInterval(30); }){Tag = 30},
-          new ToolStripMenuItem("60 sec", null, (_, _) => { SetUpdateInterval(60); }){Tag = 60},
+          new ToolStripMenuItem("1秒", null, (_, _) => { SetUpdateInterval(1); }){Tag = 1},
+          new ToolStripMenuItem("2秒", null, (_, _) => { SetUpdateInterval(2); }){Tag = 2},
+          new ToolStripMenuItem("3秒", null, (_, _) => { SetUpdateInterval(3); }){Tag = 3},
+          new ToolStripMenuItem("5秒", null, (_, _) => { SetUpdateInterval(5); }){Tag = 5},
+          new ToolStripMenuItem("10秒", null, (_, _) => { SetUpdateInterval(10); }){Tag = 10},
+          new ToolStripMenuItem("30秒", null, (_, _) => { SetUpdateInterval(30); }){Tag = 30},
+          new ToolStripMenuItem("60秒", null, (_, _) => { SetUpdateInterval(60); }){Tag = 60},
         }
       };
       updateIntervalMenu.DropDown.Closing += OnContextMenuStripClosing;
       SetUpdateInterval(Settings.UpdateIntervalSeconds);
 
-      iconTypeMenu = new ToolStripMenuItem("Icon type") {
+      iconTypeMenu = new ToolStripMenuItem("图标类型") {
         DropDownItems = {
-          new ToolStripMenuItem("Image", null, (_, _) => { SetIconType(Enums.TrayIconMode.Image); }),
-          new ToolStripMenuItem("Memory usage (Bar)", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryUsageBar); }),
-          new ToolStripMenuItem("Memory usage (Pie)", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryUsagePie); }),
-          new ToolStripMenuItem("Memory usage (%)", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryUsagePercent); }),
-          new ToolStripMenuItem("Memory usage (Value)", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryUsageValue); }),
-          new ToolStripMenuItem("Memory available", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryAvailable); }),
+          new ToolStripMenuItem("图像", null, (_, _) => { SetIconType(Enums.TrayIconMode.Image); }),
+          new ToolStripMenuItem("内存使用率（条形图）", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryUsageBar); }),
+          new ToolStripMenuItem("内存使用率（饼图）", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryUsagePie); }),
+          new ToolStripMenuItem("内存使用率（百分比）", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryUsagePercent); }),
+          new ToolStripMenuItem("内存使用率（数值）", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryUsageValue); }),
+          new ToolStripMenuItem("可用内存", null, (_, _) => { SetIconType(Enums.TrayIconMode.MemoryAvailable); }),
         }
       };
       iconTypeMenu.DropDown.Closing += OnContextMenuStripClosing;
       SetIconType(Settings.TrayIconMode);
 
-      iconDoubleClickMenu = new ToolStripMenuItem("Icon double click action") {
+      iconDoubleClickMenu = new ToolStripMenuItem("图标双击动作") {
         DropDownItems = {
-          new ToolStripMenuItem("Nothing", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.None); }),
-          new ToolStripMenuItem("Optimize", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.Optimize); }),
-          new ToolStripMenuItem("Task Manager", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.TaskManager); }),
-          new ToolStripMenuItem("Resource Monitor", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.ResourceMonitor); }),
-          new ToolStripMenuItem("Show status", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.ShowStatus); }),
+          new ToolStripMenuItem("无操作", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.None); }),
+          new ToolStripMenuItem("优化", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.Optimize); }),
+          new ToolStripMenuItem("任务管理器", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.TaskManager); }),
+          new ToolStripMenuItem("资源监视器", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.ResourceMonitor); }),
+          new ToolStripMenuItem("显示状态", null, (_, _) => { SetIconDoubleClickAction(Enums.DoubleClickAction.ShowStatus); }),
         }
       };
       iconDoubleClickMenu.DropDown.Closing += OnContextMenuStripClosing;
       SetIconDoubleClickAction(Settings.DoubleClickAction);
 
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Options") {
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("选项") {
         DropDownItems = {
           autoOptimizationIntervalMenu,
           autoOptimizeUsageMenu,
@@ -602,7 +602,7 @@ namespace winMemoryOptimizer {
           updateIntervalMenu,
           iconTypeMenu,
           iconDoubleClickMenu,
-          new ToolStripMenuItem("Icon color", null, (_, _) => {
+          new ToolStripMenuItem("图标颜色", null, (_, _) => {
             using (var dialog = new ColorDialog()) {
               dialog.Color = Settings.TrayIconValueColor;
               if (dialog.ShowDialog() != DialogResult.OK || Settings.TrayIconValueColor == dialog.Color) return;
@@ -616,18 +616,18 @@ namespace winMemoryOptimizer {
 
       notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
       notifyIcon.ContextMenuStrip.Items.Add(statusMenuLabel);
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Help") {
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("帮助") {
         DropDownItems = {
-          new ToolStripMenuItem("Check for updates", null, (_, _) => { 
+          new ToolStripMenuItem("检查更新", null, (_, _) => { 
             if (Updater.CheckForUpdates(Updater.CheckUpdatesMode.AllMessages))
               lastUpdateCheckTime = DateTimeOffset.Now;
           }),
-          new ToolStripMenuItem("Site", null, (_, _) => { Updater.VisitAppSite(); }),
-          new ToolStripMenuItem("About", null, (_, _) => { Updater.ShowAbout(); }),
+          new ToolStripMenuItem("网站", null, (_, _) => { Updater.VisitAppSite(); }),
+          new ToolStripMenuItem("关于", null, (_, _) => { Updater.ShowAbout(); }),
         }
       });
 
-      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, (_, _) => { ExitThread(); }));
+      notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("退出", null, (_, _) => { ExitThread(); }));
     }
 
     private void SetIconType(Enums.TrayIconMode trayIconMode) {
@@ -679,10 +679,10 @@ namespace winMemoryOptimizer {
     private string GetStatusText() {
       string text = GetTrayIconText();
       if (lastRun != DateTimeOffset.MinValue) {
-        text += $"\nLast run: {lastRun:G}";
+        text += $"\n上次运行: {lastRun:G}";
       }
       if (nextAutoOptimizationByInterval != DateTimeOffset.MinValue) {
-        text += $"\nNext run: {nextAutoOptimizationByInterval:G}";
+        text += $"\n下次运行: {nextAutoOptimizationByInterval:G}";
       }
       return text;
     }
